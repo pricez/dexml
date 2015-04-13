@@ -1029,3 +1029,17 @@ class TestDexml(unittest.TestCase):
         self.assertRaises(dexml.ParseError,Notebook.parse,"<Notebook><wtf /><notes><note>one</note><note>two</note><wtf /></notes></Notebook>")
         self.assertRaises(dexml.ParseError,Notebook.parse,"<Notebook tag='home'><notes><note>one</note><note>two</note></notes></Notebook>")
 
+    def test_model_field_tagname(self):
+        class fieldobj(dexml.Model):
+            class meta:
+                tagname = 'aa'
+            name = fields.String(tagname="name")
+
+        class obj(dexml.Model):
+            f1 = fields.Model(fieldobj)
+            f2 = fields.Model(fieldobj, tagname="bb")
+
+        o = obj()
+        o.f1 = fieldobj(name="abc")
+        o.f2 = fieldobj(name="def")
+        self.assertEquals(o.render(fragment=True),'<obj><f1><name>abc</name></f1><bb><name>def</name></bb></obj>')
