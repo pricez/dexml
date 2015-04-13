@@ -406,9 +406,11 @@ class Model(Field):
 
     class arguments(Field.arguments):
         type = None
+        tagname = None
 
     def __init__(self,type=None,**kwds):
         kwds["type"] = type
+
         super(Model,self).__init__(**kwds)
 
     def _get_type(self):
@@ -424,6 +426,9 @@ class Model(Field):
             raise ValueError("Invalid value type %s. Model field requires %s instance" %
                 (value.__class__.__name__, typeclass.__name__))
         super(Model, self).__set__(instance, value)
+        obj = instance.__dict__[self.field_name]
+        if obj:
+            obj.meta.tagname = self.tagname or self.field_name
 
     @property
     def typeclass(self):

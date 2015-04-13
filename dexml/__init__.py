@@ -272,6 +272,7 @@ class Model(object):
         Keyword arguments that correspond to declared fields are processed
         and assigned to that field.
         """
+        self.meta = copy.copy(self.__class__.meta)
         for f in self._fields:
             try:
                 setattr(self,f.field_name,kwds[f.field_name])
