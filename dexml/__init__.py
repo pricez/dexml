@@ -411,6 +411,8 @@ class Model(object):
                 data.append('<?xml version="1.0" ?>')
         data.extend(self._render(nsmap))
         xml = "".join(data)
+        if encoding:
+            xml = xml.encode(encoding)
         if pretty:
             xml = minidom.parseString(xml).toprettyxml()
             if fragment:
@@ -420,8 +422,6 @@ class Model(object):
                 # minidom adds when pretty printing.
                 line_break_position = xml.find('\n') + 1
                 xml = xml[line_break_position:]
-        if encoding:
-            xml = xml.encode(encoding)
         return xml
 
     def irender(self,encoding=None,fragment=False,nsmap=None):
