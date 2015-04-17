@@ -499,7 +499,7 @@ class Model(object):
         #  Check that all required fields actually rendered something
         for f in self._fields:
             if f.required and f not in used_fields:
-                raise RenderError("Field '%s' is missing" % (f.field_name,))
+                raise RenderError("Field '%s' in tag '%s' (model '%s') is missing" % (f.field_name,self.meta.tagname,self.__class__))
         #  Clean up
         if pushed_ns:
             nsmap[prefix].pop(0)
