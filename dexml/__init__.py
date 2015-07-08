@@ -414,7 +414,10 @@ class Model(object):
         if encoding:
             xml = xml.encode(encoding)
         if pretty:
-            xml = minidom.parseString(xml).toprettyxml()
+            pretty_kwargs = {}
+            if encoding:
+                pretty_kwargs['encoding'] = encoding
+            xml = minidom.parseString(xml).toprettyxml(**pretty_kwargs)
             if fragment:
                 # Since the `fragment` flag is set, we assume that the user
                 # wants the header removed no matter what.
